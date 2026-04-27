@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>801-B - Northend Rental Unit</title>
-    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     <style>
         * {
             margin: 0;
@@ -57,10 +56,50 @@
             line-height: 1.6;
         }
         
-        .h-captcha {
-            display: flex;
-            justify-content: center;
+        .math-question {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
             margin-bottom: 20px;
+            font-size: 18px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .captcha-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .captcha-input-group input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        
+        .captcha-input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .captcha-input-group input::placeholder {
+            color: #999;
+        }
+        
+        .error-message {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
         }
         
         .captcha-btn {
@@ -73,6 +112,7 @@
             cursor: pointer;
             font-size: 16px;
             transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
         }
         
         .captcha-btn:hover {
@@ -80,10 +120,8 @@
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
         
-        .captcha-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .captcha-btn:active {
+            transform: translateY(0);
         }
         
         .hidden {
@@ -221,14 +259,18 @@
     </style>
 </head>
 <body>
-    <!-- hCaptcha Overlay -->
+    <!-- Math CAPTCHA Overlay -->
     <div class="captcha-overlay" id="captchaOverlay">
         <div class="captcha-box">
             <h2>🔐 Verify Access</h2>
-            <p>Please confirm you're human to view this property</p>
+            <p>Solve the math problem to view this property</p>
             <form id="captchaForm">
-                <div class="h-captcha" data-sitekey="9b1a7d0c-5c0f-4a0f-1234-567890abcdef"></div>
-                <button type="submit" class="captcha-btn" id="verifyBtn">Verify & Continue</button>
+                <div class="math-question" id="mathQuestion"></div>
+                <div class="error-message" id="errorMessage">Incorrect answer. Please try again.</div>
+                <div class="captcha-input-group">
+                    <input type="number" id="mathAnswer" placeholder="Your answer" autocomplete="off">
+                </div>
+                <button type="submit" class="captcha-btn">Verify & Continue</button>
             </form>
         </div>
     </div>
@@ -266,29 +308,58 @@
     </div>
 
     <script>
-        // CAPTCHA Verification
-        document.getElementById('captchaForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        let mathNum1, mathNum2, mathOperator, correctAnswer;
+
+        // Generate random math question
+        function generateMathQuestion() {
+            mathNum1 = Math.floor(Math.random() * 20) + 1;
+            mathNum2 = Math.floor(Math.random() * 20) + 1;
             
-            const captchaResponse = document.querySelector('[name=h-captcha-response]')?.value;
+            const operators = ['+', '-', '*'];
+            mathOperator = operators[Math.floor(Math.random() * operators.length)];
             
-            if (captchaResponse) {
-                // CAPTCHA verified - hide overlay and show content
-                document.getElementById('captchaOverlay').classList.add('hidden');
-                document.getElementById('mainContent').classList.remove('hidden');
-                
-                // Optional: Store verification in session storage so page refresh doesn't reset
-                sessionStorage.setItem('captchaVerified', 'true');
-            } else {
-                alert('Please complete the CAPTCHA');
+            if (mathOperator === '+') {
+                correctAnswer = mathNum1 + mathNum2;
+            } else if (mathOperator === '-') {
+                correctAnswer = mathNum1 - mathNum2;
+            } else if (mathOperator === '*') {
+                correctAnswer = mathNum1 * mathNum2;
             }
-        });
-        
-        // Check if already verified on page load
+            
+            document.getElementById('mathQuestion').textContent = `What is ${mathNum1} ${mathOperator} ${mathNum2}?`;
+            document.getElementById('mathAnswer').value = '';
+            document.getElementById('errorMessage').classList.remove('show');
+        }
+
+        // Initialize CAPTCHA on page load
         window.addEventListener('load', function() {
             if (sessionStorage.getItem('captchaVerified') === 'true') {
                 document.getElementById('captchaOverlay').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
+            } else {
+                generateMathQuestion();
+            }
+        });
+
+        // Handle CAPTCHA form submission
+        document.getElementById('captchaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userAnswer = parseInt(document.getElementById('mathAnswer').value);
+            
+            if (userAnswer === correctAnswer) {
+                // Correct answer - hide overlay and show content
+                document.getElementById('captchaOverlay').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+                
+                // Store verification in session storage
+                sessionStorage.setItem('captchaVerified', 'true');
+            } else {
+                // Incorrect answer - show error and generate new question
+                document.getElementById('errorMessage').classList.add('show');
+                setTimeout(() => {
+                    generateMathQuestion();
+                }, 1500);
             }
         });
 
