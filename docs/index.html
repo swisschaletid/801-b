@@ -35,12 +35,79 @@
             height: 300px;
             overflow: hidden;
             background: #f0f0f0;
+            position: relative;
+            touch-action: pan-y;
         }
         
-        .image-section img {
+        .carousel-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .carousel-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+        
+        .carousel-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            color: #333;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+        
+        .carousel-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .prev-btn {
+            left: 10px;
+        }
+        
+        .next-btn {
+            right: 10px;
+        }
+        
+        .carousel-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .dot.active {
+            background: rgba(255, 255, 255, 1);
         }
         
         .content {
@@ -86,9 +153,23 @@
 </head>
 <body>
     <div class="container">
-        <div class="image-section">
-            <img src="pics/living_room.png" alt="801-B Living Room">
-            <img src="pics/bathroom.png" alt="801-B Bathroom">
+        <div class="image-section" id="imageCarousel">
+            <div class="carousel-container" id="carouselContainer">
+                <div class="carousel-slide">
+                    <img src="pics/living_room.png" alt="801-B Living Room">
+                </div>
+                <div class="carousel-slide">
+                    <img src="pics/bathroom.png" alt="801-B Bathroom">
+                </div>
+            </div>
+            
+            <button class="carousel-nav-btn prev-btn" onclick="previousSlide()">❮</button>
+            <button class="carousel-nav-btn next-btn" onclick="nextSlide()">❯</button>
+            
+            <div class="carousel-dots">
+                <div class="dot active" onclick="goToSlide(0)"></div>
+                <div class="dot" onclick="goToSlide(1)"></div>
+            </div>
         </div>
         
         <div class="content">
@@ -101,5 +182,68 @@
             </a>
         </div>
     </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 2;
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        const carouselContainer = document.getElementById('carouselContainer');
+        const carousel = document.getElementById('imageCarousel');
+
+        // Touch swipe support
+        carousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        carousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchStartX - touchEndX > swipeThreshold) {
+                nextSlide();
+            } else if (touchEndX - touchStartX > swipeThreshold) {
+                previousSlide();
+            }
+        }
+
+        function updateCarousel() {
+            const offset = currentSlide * -100;
+            carouselContainer.style.transform = `translateX(${offset}%)`;
+            updateDots();
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function previousSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+    </script>
 </body>
 </html>
