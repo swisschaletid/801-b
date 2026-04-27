@@ -132,9 +132,10 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            max-width: 600px;
+            max-width: 700px;
             width: 100%;
-            overflow: hidden;
+            overflow-y: auto;
+            max-height: 90vh;
         }
         
         .image-section {
@@ -219,19 +220,105 @@
         
         .content {
             padding: 40px;
-            text-align: center;
         }
         
         h1 {
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-size: 28px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        h2 {
+            color: #667eea;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
         }
         
         p {
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             line-height: 1.6;
+        }
+        
+        .location-highlights {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .highlight-item {
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .highlight-item strong {
+            color: #333;
+        }
+        
+        .highlight-item span {
+            color: #666;
+        }
+        
+        ul {
+            color: #666;
+            margin-left: 20px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        ul li {
+            margin-bottom: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: white;
+        }
+        
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            color: #666;
+        }
+        
+        table tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .policies-section {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .policies-section ul {
+            margin-left: 20px;
         }
         
         .email-btn {
@@ -246,6 +333,8 @@
             border: none;
             cursor: pointer;
             font-size: 16px;
+            width: 100%;
+            text-align: center;
         }
         
         .email-btn:hover {
@@ -298,11 +387,98 @@
         
         <div class="content">
             <h1>801-B</h1>
-            <p>Northend Rental Unit</p>
-            <p>Interested in learning more about this property? Get in touch with us today!</p>
+            <p class="subtitle">Historic North End Rental Unit - Boise, ID</p>
             
+            <!-- Location & Access Section -->
+            <h2>📍 Location & Access</h2>
+            <div class="location-highlights">
+                <div class="highlight-item">
+                    <strong>Interstate Access:</strong>
+                    <span>2 minutes</span>
+                </div>
+                <div class="highlight-item">
+                    <strong>Local Center:</strong>
+                    <span>2 blocks away</span>
+                </div>
+                <div class="highlight-item">
+                    <strong>Downtown Core:</strong>
+                    <span>10 blocks away</span>
+                </div>
+                <div class="highlight-item">
+                    <strong>Foothills:</strong>
+                    <span>1 mile away</span>
+                </div>
+            </div>
+            
+            <p><strong>Nearby Amenities:</strong> Albertson's Supermarket (original location), Micro-Brewery, Mediterranean Restaurant, Starbucks, Pizza, and many more in the local center.</p>
+            
+            <!-- Property Overview -->
+            <h2>🏠 Property Overview</h2>
+            <ul>
+                <li>One-bedroom main floor furnished unit</li>
+                <li>672 square feet</li>
+                <li>Offset and isolated upstairs apartment offers quiet nights</li>
+                <li>One of three units in a historic home divided in the 1950s</li>
+            </ul>
+            
+            <!-- Features & Amenities -->
+            <h2>✨ Features & Amenities</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Kitchen</strong></td>
+                        <td>Over-range microwave, dishwasher</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ceilings</strong></td>
+                        <td>Unique 9-foot ceilings with cove feature</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Windows</strong></td>
+                        <td>Large windows with blackout curtains</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bedroom</strong></td>
+                        <td>Queen bed with walk-in closet</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Laundry</strong></td>
+                        <td>Stacked full-size washer/dryer</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Climate Control</strong></td>
+                        <td>In-window air conditioning</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Utilities & Services -->
+            <h2>⚡ Utilities & Services</h2>
+            <ul>
+                <li><strong>All utilities included</strong> in monthly rent</li>
+                <li><strong>High-speed fiber internet</strong> included</li>
+                <li>First $50 of power included; excess is tenant's responsibility</li>
+                <li>Optional: Furniture can be removed upon request</li>
+            </ul>
+            
+            <!-- Policies & Deposit -->
+            <h2>📋 Policies & Deposit</h2>
+            <div class="policies-section">
+                <ul>
+                    <li><strong>Refundable Security Deposit:</strong> $750</li>
+                    <li><strong>Pet Policy:</strong> No pets</li>
+                </ul>
+            </div>
+            
+            <!-- Contact -->
             <a href="mailto:swisschaletid@gmail.com" class="email-btn">
-                ✉️ Contact Us
+                ✉️ Contact Us for More Information
             </a>
         </div>
     </div>
