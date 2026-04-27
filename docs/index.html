@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>801-B - Northend Rental Unit</title>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     <style>
         * {
             margin: 0;
@@ -19,6 +20,74 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+        }
+        
+        .captcha-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .captcha-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .captcha-box h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .captcha-box p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .h-captcha {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .captcha-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .captcha-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .captcha-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .hidden {
+            display: none !important;
         }
         
         .container {
@@ -152,7 +221,20 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- hCaptcha Overlay -->
+    <div class="captcha-overlay" id="captchaOverlay">
+        <div class="captcha-box">
+            <h2>🔐 Verify Access</h2>
+            <p>Please confirm you're human to view this property</p>
+            <form id="captchaForm">
+                <div class="h-captcha" data-sitekey="9b1a7d0c-5c0f-4a0f-1234-567890abcdef"></div>
+                <button type="submit" class="captcha-btn" id="verifyBtn">Verify & Continue</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until CAPTCHA verified) -->
+    <div class="container hidden" id="mainContent">
         <div class="image-section" id="imageCarousel">
             <div class="carousel-container" id="carouselContainer">
                 <div class="carousel-slide">
@@ -184,6 +266,33 @@
     </div>
 
     <script>
+        // CAPTCHA Verification
+        document.getElementById('captchaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const captchaResponse = document.querySelector('[name=h-captcha-response]')?.value;
+            
+            if (captchaResponse) {
+                // CAPTCHA verified - hide overlay and show content
+                document.getElementById('captchaOverlay').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+                
+                // Optional: Store verification in session storage so page refresh doesn't reset
+                sessionStorage.setItem('captchaVerified', 'true');
+            } else {
+                alert('Please complete the CAPTCHA');
+            }
+        });
+        
+        // Check if already verified on page load
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('captchaVerified') === 'true') {
+                document.getElementById('captchaOverlay').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+            }
+        });
+
+        // Carousel Functions
         let currentSlide = 0;
         const totalSlides = 2;
         let touchStartX = 0;
@@ -193,11 +302,11 @@
         const carousel = document.getElementById('imageCarousel');
 
         // Touch swipe support
-        carousel.addEventListener('touchstart', (e) => {
+        carousel?.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
         }, false);
 
-        carousel.addEventListener('touchend', (e) => {
+        carousel?.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
             handleSwipe();
         }, false);
