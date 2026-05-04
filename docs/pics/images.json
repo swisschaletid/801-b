@@ -1,0 +1,39 @@
+{
+  "images": [
+    {
+      "filename": "living_room.png",
+      "title": "Living Room",
+      "description": "Main living area with 9-foot ceilings and natural light"
+    },
+    {
+      "filename": "living_room_1.png",
+      "title": "Living Room View 2",
+      "description": "Alternative view of the spacious living room"
+    },
+    {
+      "filename": "living_room_2.png",
+      "title": "Living Room View 3",
+      "description": "Another angle of the living room area"
+    },
+    {
+      "filename": "bedroom.png",
+      "title": "Bedroom",
+      "description": "Furnished bedroom with queen bed and walk-in closet"
+    },
+    {
+      "filename": "bathroom.png",
+      "title": "Bathroom",
+      "description": "Full bathroom with modern fixtures"
+    },
+    {
+      "filename": "kitchen_1.png",
+      "title": "Kitchen",
+      "description": "Large kitchen with dishwasher and over-range microwave"
+    },
+    {
+      "filename": "kitchen_2.png",
+      "title": "Kitchen Dining Area",
+      "description": "Kitchen with dining space"
+    }
+  ]
+}

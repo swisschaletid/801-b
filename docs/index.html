@@ -415,20 +415,14 @@
     <div class="container hidden" id="mainContent">
         <div class="image-section" id="imageCarousel">
             <div class="carousel-container" id="carouselContainer">
-                <div class="carousel-slide">
-                    <img src="pics/living_room.png" alt="801-B Living Room">
-                </div>
-                <div class="carousel-slide">
-                    <img src="pics/bathroom.png" alt="801-B Bathroom">
-                </div>
+                <!-- Slides will be generated dynamically here -->
             </div>
             
             <button class="carousel-nav-btn prev-btn" onclick="previousSlide()">❮</button>
             <button class="carousel-nav-btn next-btn" onclick="nextSlide()">❯</button>
             
-            <div class="carousel-dots">
-                <div class="dot active" onclick="goToSlide(0)"></div>
-                <div class="dot" onclick="goToSlide(1)"></div>
+            <div class="carousel-dots" id="carouselDots">
+                <!-- Dots will be generated dynamically here -->
             </div>
         </div>
         
@@ -534,7 +528,53 @@
     </div>
 
     <script>
+        let images = [];
+        let currentSlide = 0;
+        let totalSlides = 0;
         let mathNum1, mathNum2, mathOperator, correctAnswer;
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        // Fetch and load images from JSON
+        async function loadImages() {
+            try {
+                const response = await fetch('pics/images.json');
+                const data = await response.json();
+                images = data.images;
+                totalSlides = images.length;
+                
+                generateCarousel();
+                generateDots();
+            } catch (error) {
+                console.error('Error loading images:', error);
+            }
+        }
+
+        // Generate carousel slides dynamically
+        function generateCarousel() {
+            const container = document.getElementById('carouselContainer');
+            container.innerHTML = '';
+            
+            images.forEach(img => {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                slide.innerHTML = `<img src="pics/${img.filename}" alt="${img.title}">`;
+                container.appendChild(slide);
+            });
+        }
+
+        // Generate dots dynamically
+        function generateDots() {
+            const dotsContainer = document.getElementById('carouselDots');
+            dotsContainer.innerHTML = '';
+            
+            images.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToSlide(index);
+                dotsContainer.appendChild(dot);
+            });
+        }
 
         // Generate random math question
         function generateMathQuestion() {
@@ -555,8 +595,10 @@
             document.getElementById('errorMessage').classList.remove('show');
         }
 
-        // Initialize CAPTCHA on page load
+        // Initialize on page load
         window.addEventListener('load', function() {
+            loadImages();
+            
             if (sessionStorage.getItem('captchaVerified') === 'true') {
                 document.getElementById('captchaOverlay').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
@@ -572,14 +614,10 @@
             const userAnswer = parseInt(document.getElementById('mathAnswer').value);
             
             if (userAnswer === correctAnswer) {
-                // Correct answer - hide overlay and show content
                 document.getElementById('captchaOverlay').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
-                
-                // Store verification in session storage
                 sessionStorage.setItem('captchaVerified', 'true');
             } else {
-                // Incorrect answer - show error and generate new question
                 document.getElementById('errorMessage').classList.add('show');
                 setTimeout(() => {
                     generateMathQuestion();
@@ -588,15 +626,8 @@
         });
 
         // Carousel Functions
-        let currentSlide = 0;
-        const totalSlides = 2;
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        const carouselContainer = document.getElementById('carouselContainer');
         const carousel = document.getElementById('imageCarousel');
 
-        // Touch swipe support
         carousel?.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
         }, false);
@@ -616,6 +647,7 @@
         }
 
         function updateCarousel() {
+            const carouselContainer = document.getElementById('carouselContainer');
             const offset = currentSlide * -100;
             carouselContainer.style.transform = `translateX(${offset}%)`;
             updateDots();
