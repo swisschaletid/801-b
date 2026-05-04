@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -20,7 +21,8 @@
             align-items: center;
             padding: 20px;
         }
-        
+
+        /* CAPTCHA STYLES */
         .captcha-overlay {
             position: fixed;
             top: 0;
@@ -33,7 +35,7 @@
             align-items: center;
             z-index: 1000;
         }
-        
+
         .captcha-box {
             background: white;
             padding: 40px;
@@ -43,19 +45,7 @@
             width: 100%;
             text-align: center;
         }
-        
-        .captcha-box h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        
-        .captcha-box p {
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
+
         .math-question {
             background: #f5f5f5;
             padding: 20px;
@@ -65,13 +55,13 @@
             color: #333;
             font-weight: 600;
         }
-        
+
         .captcha-input-group {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
         }
-        
+
         .captcha-input-group input {
             flex: 1;
             padding: 12px;
@@ -79,29 +69,19 @@
             border-radius: 5px;
             font-size: 16px;
             text-align: center;
-            transition: border-color 0.3s;
         }
-        
-        .captcha-input-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .captcha-input-group input::placeholder {
-            color: #999;
-        }
-        
+
         .error-message {
             color: #d32f2f;
             font-size: 14px;
             margin-bottom: 15px;
             display: none;
         }
-        
+
         .error-message.show {
             display: block;
         }
-        
+
         .captcha-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -110,64 +90,80 @@
             border-radius: 5px;
             font-weight: 600;
             cursor: pointer;
-            font-size: 16px;
-            transition: transform 0.3s, box-shadow 0.3s;
             width: 100%;
         }
-        
-        .captcha-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .captcha-btn:active {
-            transform: translateY(0);
-        }
-        
+
         .hidden {
             display: none !important;
         }
-        
+
+        /* CAROUSEL CORE STYLES */
         .container {
             background: white;
             border-radius: 10px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             max-width: 700px;
             width: 100%;
-            overflow-y: auto;
-            max-height: 90vh;
+            overflow: hidden;
+            /* Changed from overflow-y to hidden for carousel */
         }
-        
+
         .image-section {
             width: 100%;
-            height: 300px;
+            height: 400px;
+            /* Increased height to fit text better */
             overflow: hidden;
             background: #f0f0f0;
             position: relative;
             touch-action: pan-y;
         }
-        
-        .carousel-container {
+
+        #carouselContainer {
             width: 100%;
             height: 100%;
             display: flex;
+            /* Lines slides horizontally */
             transition: transform 0.5s ease-in-out;
         }
-        
+
         .carousel-slide {
             min-width: 100%;
+            /* Each slide is full width */
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative;
         }
-        
+
         .carousel-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            /* Ensures images fill area without stretching */
         }
-        
+
+        /* TEXT OVERLAY STYLES */
+        .text-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px;
+            z-index: 5;
+        }
+
+        .text-overlay h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.25rem;
+        }
+
+        .text-overlay p {
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* NAVIGATION BUTTONS */
         .carousel-nav-btn {
             position: absolute;
             top: 50%;
@@ -179,221 +175,94 @@
             padding: 10px 15px;
             cursor: pointer;
             border-radius: 5px;
-            transition: background 0.3s;
             z-index: 10;
+            transition: background 0.3s;
         }
-        
+
         .carousel-nav-btn:hover {
             background: rgba(255, 255, 255, 0.9);
         }
-        
+
         .prev-btn {
             left: 10px;
         }
-        
+
         .next-btn {
             right: 10px;
         }
-        
+
+        /* DOTS */
         .carousel-dots {
             position: absolute;
-            bottom: 10px;
+            bottom: 85px;
+            /* Positioned above the text overlay */
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             gap: 8px;
             z-index: 10;
         }
-        
+
         .dot {
             width: 10px;
             height: 10px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.5);
             cursor: pointer;
-            transition: background 0.3s;
         }
-        
+
         .dot.active {
-            background: rgba(255, 255, 255, 1);
+            background: #fff;
         }
-        
+
+        /* PAGE CONTENT STYLES */
         .content {
             padding: 30px 25px;
         }
-        
+
         h1 {
             color: #333;
-            margin-bottom: 10px;
-            font-size: 28px;
             text-align: center;
+            margin-bottom: 10px;
         }
-        
+
         .subtitle {
             color: #667eea;
             text-align: center;
             margin-bottom: 25px;
-            font-size: 16px;
             font-weight: 600;
         }
-        
+
         h2 {
             color: #667eea;
             margin-top: 20px;
-            margin-bottom: 12px;
-            font-size: 18px;
             border-bottom: 2px solid #667eea;
             padding-bottom: 8px;
         }
-        
+
         p {
             color: #666;
-            margin-bottom: 15px;
             line-height: 1.6;
-            font-size: 15px;
+            margin-bottom: 15px;
         }
-        
+
         .location-highlights {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
             margin-bottom: 18px;
         }
-        
+
         .highlight-item {
             background: #f5f5f5;
             padding: 14px;
             border-radius: 6px;
             border-left: 4px solid #667eea;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        
-        .highlight-item strong {
-            color: #333;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .highlight-item span {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        ul {
-            color: #666;
-            margin-left: 20px;
-            margin-bottom: 18px;
-            line-height: 1.8;
-            font-size: 15px;
-        }
-        
-        ul li {
-            margin-bottom: 8px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 18px;
-            background: white;
-            font-size: 14px;
-        }
-        
-        table th {
-            background: #667eea;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-weight: 600;
-        }
-        
-        table td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-            color: #666;
-        }
-        
-        table tr:hover {
-            background: #f9f9f9;
-        }
-        
-        .policies-section {
-            background: #f5f5f5;
-            padding: 18px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-        
-        .policies-section ul {
-            margin-left: 20px;
-            margin-bottom: 0;
-        }
-        
-        .email-btn {
-            display: block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 14px 30px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            text-align: center;
-            box-sizing: border-box;
-        }
-        
-        .email-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .email-btn:active {
-            transform: translateY(0);
-        }
-
-        /* Tablet and larger screens */
-        @media (min-width: 600px) {
-            .content {
-                padding: 40px;
-            }
-
-            h2 {
-                margin-top: 25px;
-                margin-bottom: 15px;
-                padding-bottom: 10px;
-            }
-
-            .location-highlights {
-                gap: 15px;
-                margin-bottom: 20px;
-            }
-
-            .highlight-item {
-                padding: 16px;
-            }
-
-            p {
-                font-size: 16px;
-            }
-
-            ul {
-                font-size: 16px;
-                margin-bottom: 20px;
-            }
-
-            table {
-                font-size: 15px;
-                margin-bottom: 20px;
-            }
         }
     </style>
+
 </head>
+
 <body>
     <!-- Math CAPTCHA Overlay -->
     <div class="captcha-overlay" id="captchaOverlay">
@@ -417,20 +286,20 @@
             <div class="carousel-container" id="carouselContainer">
                 <!-- Slides will be generated dynamically here -->
             </div>
-            
+
             <button class="carousel-nav-btn prev-btn" onclick="previousSlide()">❮</button>
             <button class="carousel-nav-btn next-btn" onclick="nextSlide()">❯</button>
-            
+
             <div class="carousel-dots" id="carouselDots">
                 <!-- Dots will be generated dynamically here -->
             </div>
         </div>
-        
+
         <div class="content">
             <h1>801-B</h1>
             <h1>$1795 monthly</h1>
             <p class="subtitle">Historic North End Rental Unit - Boise, ID</p>
-            
+
             <!-- Location & Access Section -->
             <h2>Location & Access</h2>
             <div class="location-highlights">
@@ -451,9 +320,10 @@
                     <span>1 mile away</span>
                 </div>
             </div>
-            
-            <p><strong>Nearby Amenities:</strong> Albertson's Supermarket (original location), Micro-Brewery, Mediterranean Restaurant, Starbucks, Pizza, and many more in the local center.</p>
-            
+
+            <p><strong>Nearby Amenities:</strong> Albertson's Supermarket (original location), Micro-Brewery,
+                Mediterranean Restaurant, Starbucks, Pizza, and many more in the local center.</p>
+
             <!-- Property Overview -->
             <h2>Property Overview</h2>
             <ul>
@@ -462,7 +332,7 @@
                 <li>Offset and isolated upstairs apartment offers quiet nights</li>
                 <li>One of three units in a historic home divided in the 1950s</li>
             </ul>
-            
+
             <!-- Features & Amenities -->
             <h2>Features & Amenities</h2>
             <table>
@@ -499,7 +369,7 @@
                     </tr>
                 </tbody>
             </table>
-            
+
             <!-- Utilities & Services -->
             <h2>Utilities & Services</h2>
             <ul>
@@ -508,7 +378,7 @@
                 <li><strong>High-speed fiber internet included</strong></li>
                 <li><strong>First $50 of power included</strong></li>
             </ul>
-            
+
             <!-- Policies & Deposit -->
             <h2>Policies & Deposit</h2>
             <div class="policies-section">
@@ -519,7 +389,154 @@
                     <li><strong>No Smoking Policy</strong></li>
                 </ul>
             </div>
-            
+
+
+            <script>
+                let images = [];
+                let currentSlide = 0; // Using this as the master index
+                let totalSlides = 0;
+                let mathNum1, mathNum2, mathOperator, correctAnswer;
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                // Fetch and load images from JSON
+                async function loadImages() {
+                    try {
+                        const response = await fetch('pics/images.json');
+                        const data = await response.json();
+                        images = data.images;
+                        totalSlides = images.length;
+
+                        generateCarousel();
+                        generateDots();
+                        updateCarousel(); // Initialize the first view
+                    } catch (error) {
+                        console.error('Error loading images:', error);
+                    }
+                }
+
+                // Generate carousel slides dynamically
+                function generateCarousel() {
+                    const container = document.getElementById('carouselContainer');
+                    container.innerHTML = '';
+
+                    images.forEach(img => {
+                        const slide = document.createElement('div');
+                        slide.className = 'carousel-slide';
+                        // Using flex-basis/width ensures they sit side-by-side for the sliding effect
+                        slide.innerHTML = `
+                    <img src="pics/${img.filename}" alt="${img.title}">
+                    <div class="text-overlay">
+                        <h3>${img.title}</h3>
+                        <p>${img.description}</p>
+                    </div>
+                `;
+                        container.appendChild(slide);
+                    });
+                }
+
+                // Generate dots dynamically
+                function generateDots() {
+                    const dotsContainer = document.getElementById('carouselDots');
+                    dotsContainer.innerHTML = '';
+
+                    images.forEach((_, index) => {
+                        const dot = document.createElement('div');
+                        dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                        dot.onclick = () => goToSlide(index);
+                        dotsContainer.appendChild(dot);
+                    });
+                }
+
+                // Master function to handle UI updates
+                function updateCarousel() {
+                    const container = document.getElementById('carouselContainer');
+                    if (!container || totalSlides === 0) return;
+
+                    // Apply the sliding movement
+                    const offset = currentSlide * -100;
+                    container.style.transform = `translateX(${offset}%)`;
+
+                    // Update Dot active states
+                    const dots = document.querySelectorAll('.dot');
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentSlide);
+                    });
+                }
+
+                function nextSlide() {
+                    currentSlide = (currentSlide + 1) % totalSlides;
+                    updateCarousel();
+                }
+
+                function previousSlide() {
+                    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                    updateCarousel();
+                }
+
+                function goToSlide(index) {
+                    currentSlide = index;
+                    updateCarousel();
+                }
+
+                // --- MATH CAPTCHA LOGIC ---
+                function generateMathQuestion() {
+                    mathNum1 = Math.floor(Math.random() * 10) + 1;
+                    mathNum2 = Math.floor(Math.random() * 10) + 1;
+                    const operators = ['+', '-'];
+                    mathOperator = operators[Math.floor(Math.random() * operators.length)];
+
+                    if (mathOperator === '+') {
+                        correctAnswer = mathNum1 + mathNum2;
+                    } else {
+                        correctAnswer = mathNum1 - mathNum2;
+                    }
+
+                    document.getElementById('mathQuestion').textContent = `What is ${mathNum1} ${mathOperator} ${mathNum2}?`;
+                    document.getElementById('mathAnswer').value = '';
+                    document.getElementById('errorMessage').classList.remove('show');
+                }
+
+                // --- EVENT LISTENERS ---
+                window.addEventListener('load', function () {
+                    loadImages();
+                    if (sessionStorage.getItem('captchaVerified') === 'true') {
+                        document.getElementById('captchaOverlay').classList.add('hidden');
+                        document.getElementById('mainContent').classList.remove('hidden');
+                    } else {
+                        generateMathQuestion();
+                    }
+                });
+
+                document.getElementById('captchaForm').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const userAnswer = parseInt(document.getElementById('mathAnswer').value);
+                    if (userAnswer === correctAnswer) {
+                        document.getElementById('captchaOverlay').classList.add('hidden');
+                        document.getElementById('mainContent').classList.remove('hidden');
+                        sessionStorage.setItem('captchaVerified', 'true');
+                    } else {
+                        document.getElementById('errorMessage').classList.add('show');
+                        setTimeout(generateMathQuestion, 1500);
+                    }
+                });
+
+                // Touch & Keyboard Nav
+                const carousel = document.getElementById('imageCarousel');
+                carousel?.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+                carousel?.addEventListener('touchend', e => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    const swipeThreshold = 50;
+                    if (touchStartX - touchEndX > swipeThreshold) nextSlide();
+                    if (touchEndX - touchStartX > swipeThreshold) previousSlide();
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight') nextSlide();
+                    if (e.key === 'ArrowLeft') previousSlide();
+                });
+            </script>
+
             <!-- Contact -->
             <a href="mailto:swisschaletid@gmail.com" class="email-btn">
                 Contact Us for More Information
@@ -527,159 +544,7 @@
         </div>
     </div>
 
-    <script>
-        let images = [];
-        let currentSlide = 0;
-        let totalSlides = 0;
-        let mathNum1, mathNum2, mathOperator, correctAnswer;
-        let touchStartX = 0;
-        let touchEndX = 0;
 
-        // Fetch and load images from JSON
-        async function loadImages() {
-            try {
-                const response = await fetch('pics/images.json');
-                const data = await response.json();
-                images = data.images;
-                totalSlides = images.length;
-                
-                generateCarousel();
-                generateDots();
-            } catch (error) {
-                console.error('Error loading images:', error);
-            }
-        }
-
-        // Generate carousel slides dynamically
-        function generateCarousel() {
-            const container = document.getElementById('carouselContainer');
-            container.innerHTML = '';
-            
-            images.forEach(img => {
-                const slide = document.createElement('div');
-                slide.className = 'carousel-slide';
-                slide.innerHTML = `<img src="pics/${img.filename}" alt="${img.title}">`;
-                container.appendChild(slide);
-            });
-        }
-
-        // Generate dots dynamically
-        function generateDots() {
-            const dotsContainer = document.getElementById('carouselDots');
-            dotsContainer.innerHTML = '';
-            
-            images.forEach((_, index) => {
-                const dot = document.createElement('div');
-                dot.className = `dot ${index === 0 ? 'active' : ''}`;
-                dot.onclick = () => goToSlide(index);
-                dotsContainer.appendChild(dot);
-            });
-        }
-
-        // Generate random math question
-        function generateMathQuestion() {
-            mathNum1 = Math.floor(Math.random() * 10) + 1;
-            mathNum2 = Math.floor(Math.random() * 10) + 1;
-            
-            const operators = ['+', '-'];
-            mathOperator = operators[Math.floor(Math.random() * operators.length)];
-            
-            if (mathOperator === '+') {
-                correctAnswer = mathNum1 + mathNum2;
-            } else if (mathOperator === '-') {
-                correctAnswer = mathNum1 - mathNum2;
-            }
-            
-            document.getElementById('mathQuestion').textContent = `What is ${mathNum1} ${mathOperator} ${mathNum2}?`;
-            document.getElementById('mathAnswer').value = '';
-            document.getElementById('errorMessage').classList.remove('show');
-        }
-
-        // Initialize on page load
-        window.addEventListener('load', function() {
-            loadImages();
-            
-            if (sessionStorage.getItem('captchaVerified') === 'true') {
-                document.getElementById('captchaOverlay').classList.add('hidden');
-                document.getElementById('mainContent').classList.remove('hidden');
-            } else {
-                generateMathQuestion();
-            }
-        });
-
-        // Handle CAPTCHA form submission
-        document.getElementById('captchaForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const userAnswer = parseInt(document.getElementById('mathAnswer').value);
-            
-            if (userAnswer === correctAnswer) {
-                document.getElementById('captchaOverlay').classList.add('hidden');
-                document.getElementById('mainContent').classList.remove('hidden');
-                sessionStorage.setItem('captchaVerified', 'true');
-            } else {
-                document.getElementById('errorMessage').classList.add('show');
-                setTimeout(() => {
-                    generateMathQuestion();
-                }, 1500);
-            }
-        });
-
-        // Carousel Functions
-        const carousel = document.getElementById('imageCarousel');
-
-        carousel?.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, false);
-
-        carousel?.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, false);
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            if (touchStartX - touchEndX > swipeThreshold) {
-                nextSlide();
-            } else if (touchEndX - touchStartX > swipeThreshold) {
-                previousSlide();
-            }
-        }
-
-        function updateCarousel() {
-            const carouselContainer = document.getElementById('carouselContainer');
-            const offset = currentSlide * -100;
-            carouselContainer.style.transform = `translateX(${offset}%)`;
-            updateDots();
-        }
-
-        function updateDots() {
-            const dots = document.querySelectorAll('.dot');
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSlide);
-            });
-        }
-
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            updateCarousel();
-        }
-
-        function previousSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            updateCarousel();
-        }
-
-        function goToSlide(index) {
-            currentSlide = index;
-            updateCarousel();
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextSlide();
-            if (e.key === 'ArrowLeft') previousSlide();
-        });
-    </script>
 </body>
+
 </html>
